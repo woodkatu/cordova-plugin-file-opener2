@@ -26,10 +26,13 @@ var exec = require('cordova/exec');
 
 function FileOpener2() {}
 
-FileOpener2.prototype.open = function (fileName, contentType, options) {
-    contentType = contentType || ''; 
+FileOpener2.prototype.open = function (fileName, contentType, options, callbackContext) {
+    contentType = contentType || '';
+    callbackContext = callbackContext || {};
     options = options || {};
-    exec(callbackContext.success || null, callbackContext.error || null, 'FileOpener2', 'open', [fileName, contentType, false, options.position]);
+    openWithDialog = options.openWithDialog || false;
+    dialogPosition = options.dialogPosition || null;
+    exec(callbackContext.success || null, callbackContext.error || null, 'FileOpener2', 'open', [fileName, contentType, openWithDialog, dialogPosition]);
 };
 
 FileOpener2.prototype.showOpenWithDialog = function (fileName, contentType, callbackContext) {

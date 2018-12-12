@@ -27,14 +27,34 @@ Usage
 cordova.plugins.fileOpener2.open(
     filePath,
     fileMIMEType,
-    {
-        error : function(){ },
-        success : function(){ },
-        position : [x, y]
-    }
+    options,
+    callbackContext
 );
 ```
-`position` array of coordinates from top-left device screen, use for iOS dialog positioning.
+
+`options:`
+An object of optional configuration properties:
+
+- `openWithDialog`: {iOS only}[optional][default: false] will open preview dialog in iOS.
+- `position`: {iOS only}[optional] array of coordinates from top-left device screen, use for iOS dialog positioning.
+
+Example object will all properties
+```javascript
+{
+    openWithDialog: true,
+    options: [100, 100]
+}
+```
+
+`callbackContext`:
+
+Example object:
+```javascript
+{
+    error : function() { },
+    success : function() { }
+}
+```
 
 Examples
 --------

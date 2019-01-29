@@ -198,6 +198,8 @@ public class FileOpener2 extends CordovaPlugin {
 
 		MimeTypeMap map = MimeTypeMap.getSingleton();
 		String ret = map.getMimeTypeFromExtension(suffix);
+		if(ret == null || ret.isEmpty())
+			ret = "*/*";
 
 //		String ret = "*/*";
 //		switch (suffix)

@@ -35,6 +35,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.webkit.MimeTypeMap;
 
 import io.github.pwlin.cordova.plugins.fileopener2.FileProvider;
 
@@ -59,7 +60,10 @@ public class FileOpener2 extends CordovaPlugin {
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		if (action.equals("open")) {
 			String fileUrl = args.getString(0);
-			String contentType = args.getString(1);
+			String contentType = getFileMIMEBySuffix(fileUrl);
+			if(args.length()>1&&!args.getString(1).isEmpty()) {
+				contentType = args.getString(1);
+			}
 			Boolean openWithDefault = true;
 			if(args.length() > 2){
 				openWithDefault = args.getBoolean(2);
@@ -185,6 +189,34 @@ public class FileOpener2 extends CordovaPlugin {
 			uriString = uriString.substring(10);
 		}
 		return uriString;
+	}
+	
+	private String getFileMIMEBySuffix(String filePath){
+		int suffixIndex = filePath.lastIndexOf('.');
+		String suffix = filePath.substring(suffixIndex+1);
+		suffix.toLowerCase();
+
+		MimeTypeMap map = MimeTypeMap.getSingleton();
+		String ret = map.getMimeTypeFromExtension(suffix);
+
+//		String ret = "*/*";
+//		switch (suffix)
+//		{
+//			case "jpg":
+//			case "gif":
+//			case "png":
+//			case "jpeg":
+//			case "bmp":ret = "image/*";break;
+//			case "ppt":ret = "application/vnd.ms-powerpoint";break;
+//			case "pptx":ret = "application/vnd.openxmlformats-officedocument.presentationml.presentation";break;
+//			case "doc":ret = "application/msword";break;
+//			case "docx":ret = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";break;
+//			case "xls":ret = "application/vnd.ms-excel";break;
+//			case "xlsx":ret = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";break;
+//			case "pdf":ret = "application/pdf";break;
+//			case "mp4":ret = "video/mp4";break;
+//		}
+		return ret;
 	}
 
 }
